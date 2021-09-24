@@ -22,6 +22,18 @@
     </scm>
 
     <distributionManagement>
+        <repository>
+            <id>mpos-repo</id>
+            <name>mpos release repository</name>
+            <url>https://mpos.pne.io/maven-deploy/releases</url>
+        </repository>
+
+        <snapshotRepository>
+            <id>mpos-repo-snapshots</id>
+            <name>mpos snapshot repository</name>
+            <url>https://mpos.pne.io/maven-deploy/snapshots</url>
+            <uniqueVersion>false</uniqueVersion>
+        </snapshotRepository>
 
         <site>
             <id>local-site</id>
