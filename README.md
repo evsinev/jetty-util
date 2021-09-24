@@ -1,11 +1,7 @@
-# telegram-bot-client
+# Jetty utilities
 
-The simplest telegram bot client.
+Util classes for jetty
 
-Features:
-* no dependecies
-* small footprint
-* URLConnection or OkHttp
 
 ## How to add it into your app
 
@@ -23,8 +19,8 @@ Features:
   
 <dependency>
     <groupId>com.payneteasy</groupId>
-    <artifactId>telegram-bot-client</artifactId>
-    <version>1.0-5</version>
+    <artifactId>jetty-util</artifactId>
+    <version>1.0-1</version>
 </dependency>
 ```
 
