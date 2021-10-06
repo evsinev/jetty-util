@@ -84,4 +84,16 @@ public class SafeServletResponse {
             throw new IllegalStateException("Cannot get writer", e);
         }
     }
+
+    public void sendRedirect(String aUrl) {
+        if(Strings.isEmpty(aUrl)) {
+            throw new IllegalStateException("Url for redirect is empty [" + aUrl + "]");
+        }
+        try {
+            delegate.sendRedirect(aUrl);
+        } catch (IOException e) {
+            LOG.error("Cannot send redirect to {}", aUrl, e);
+            throw new IllegalStateException("Cannot send redirect", e);
+        }
+    }
 }
