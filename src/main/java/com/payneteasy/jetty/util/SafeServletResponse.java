@@ -77,6 +77,10 @@ public class SafeServletResponse {
         delegate.setHeader(aName, aValue);
     }
 
+    public void setStatus(int sc) {
+        delegate.setStatus(sc);
+    }
+
     public Writer getWriter() {
         try {
             return delegate.getWriter();
