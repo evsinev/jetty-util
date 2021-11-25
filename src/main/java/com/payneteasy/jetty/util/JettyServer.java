@@ -17,6 +17,7 @@ public class JettyServer {
     public void startJetty() {
         try {
             jetty.start();
+            jetty.setStopAtShutdown(true);
         } catch (Exception e) {
             throw new IllegalStateException("Cannot start jetty", e);
         }
