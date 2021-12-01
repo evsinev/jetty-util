@@ -1,11 +1,13 @@
 package com.payneteasy.jetty.util;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.payneteasy.jetty.util.Strings.hasText;
 import static com.payneteasy.jetty.util.Strings.isEmpty;
@@ -84,5 +86,9 @@ public class SafeServletRequest implements IRequestParameters {
             parameters.add(name);
         }
         return parameters;
+    }
+
+    public Optional<HttpSession> getHttpSession(boolean aCreate) {
+        return Optional.ofNullable(delegate.getSession(aCreate));
     }
 }
