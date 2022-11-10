@@ -21,6 +21,14 @@
         <tag>HEAD</tag>
     </scm>
 
+    <repositories>
+        <repository>
+            <id>pne</id>
+            <name>payneteasy repo</name>
+            <url>https://maven.pne.io</url>
+        </repository>
+    </repositories>
+
     <distributionManagement>
         <repository>
             <id>mpos-repo</id>
