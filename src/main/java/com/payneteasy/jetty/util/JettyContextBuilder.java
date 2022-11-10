@@ -31,7 +31,7 @@ public class JettyContextBuilder {
 
     public JettyContextBuilder filter(String aPath, Filter aFilter) {
         LOG.info("Adding filter [{}, {}]", keyValue("path", aPath), keyValue("filter", aFilter.getClass().getSimpleName()));
-        contextHandler.addFilter(new FilterHolder(aFilter), "/*", EnumSet.of(DispatcherType.REQUEST));
+        contextHandler.addFilter(new FilterHolder(aFilter), aPath, EnumSet.of(DispatcherType.REQUEST));
         return this;
     }
 
