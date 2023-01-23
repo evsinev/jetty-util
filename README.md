@@ -27,6 +27,27 @@ Util classes for jetty
 ### Example
 
 ```java
-TBD
+public interface IEditorConfig extends IJettyStartupParameters {
+
+    @AStartupParameter(name = "STORE_DIR", value = "/opt/store")
+    File storeDir();
+
+}
+
+...
+
+IEditorConfig config = StartupParametersFactory.getStartupParameters(IEditorConfig.class);
+
+new JettyServerBuilder()
+        .startupParameters(config)
+        .servlet("/health/*" , new HealthServlet())
+        .contextOption(NO_SESSIONS)
+        .contextListener(EditorApplication::onJettyContext)
+        .build()
+        .startJetty();
+
+...
+
 ```
+
 
