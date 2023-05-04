@@ -1,5 +1,6 @@
 package com.payneteasy.jetty.util;
 
+import com.payneteasy.jetty.util.error.ServerStartupException;
 import org.eclipse.jetty.server.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +20,7 @@ public class JettyServer {
             jetty.start();
             jetty.setStopAtShutdown(true);
         } catch (Exception e) {
-            throw new IllegalStateException("Cannot start jetty", e);
+            throw new ServerStartupException("Cannot start jetty", e);
         }
     }
 
@@ -27,7 +28,8 @@ public class JettyServer {
         try {
             jetty.stop();
         } catch (Exception e) {
-            throw new IllegalStateException("Cannot stop jetty", e);
+            throw new ServerStartupException("Cannot stop jetty", e);
         }
     }
+
 }

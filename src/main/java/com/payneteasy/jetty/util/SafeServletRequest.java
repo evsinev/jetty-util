@@ -1,16 +1,14 @@
 package com.payneteasy.jetty.util;
 
+import com.payneteasy.jetty.util.error.BadRequestException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static com.payneteasy.jetty.util.Strings.hasText;
 import static com.payneteasy.jetty.util.Strings.isEmpty;
+import static com.payneteasy.jetty.util.error.HttpErrorContext.errorCtx;
 import static java.lang.Integer.parseInt;
 
 public class SafeServletRequest implements IRequestParameters {
@@ -33,7 +31,10 @@ public class SafeServletRequest implements IRequestParameters {
     public String getRequiredStringParameter(String aName) {
         String value = delegate.getParameter(aName);
         if(isEmpty(value)) {
-            throw new IllegalStateException("No value for parameter " + aName);
+            throw new BadRequestException(errorCtx("Required parameter is empty")
+                        .friendly("No value for parameter " + aName)
+                        .user("parameter", aName)
+            );
         }
         return value;
     }
@@ -90,5 +91,9 @@ public class SafeServletRequest implements IRequestParameters {
 
     public Optional<HttpSession> getHttpSession(boolean aCreate) {
         return Optional.ofNullable(delegate.getSession(aCreate));
+    }
+
+    public SafeParameters getParameters() {
+        return new SafeParameters(this);
     }
 }

@@ -1,5 +1,6 @@
 package com.payneteasy.jetty.util;
 
+import com.payneteasy.jetty.util.error.ServerStartupException;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.util.component.AbstractLifeCycle;
@@ -25,8 +26,8 @@ public class JettyServerBuilder {
     private String metricsBuckets       = "0.005, 0.01, 0.025, 0.05, 0.075, 0.1, 0.25, 0.5, 0.75, 1, 2.5, 5, 7.5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 140, 180, 240, 300, 400, 600, 700, 800";
     private boolean metricsEnabled      = false;
 
-    private List<ServletContainer> servlets      = new ArrayList<>();
-    private List<FilterContainer>  filters       = new ArrayList<>();
+    private final List<ServletContainer> servlets      = new ArrayList<>();
+    private final List<FilterContainer>  filters       = new ArrayList<>();
     private Runnable               shutdownListener;
     private JettyContextOption     contextOption = JettyContextOption.NO_SESSIONS;
     private IJettyContextListener  contextListener;
@@ -106,7 +107,7 @@ public class JettyServerBuilder {
                         .registerJettyMetrics(jetty)
                         .startMetricsServer();
             } catch (Exception e) {
-                throw new IllegalStateException("Cannot start metrics server", e);
+                throw new ServerStartupException("Cannot start metrics server", e);
             }
         }
 

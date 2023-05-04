@@ -1,5 +1,7 @@
 package com.payneteasy.jetty.util;
 
+import com.payneteasy.jetty.util.error.HttpErrorContext;
+import com.payneteasy.jetty.util.error.InternalErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,13 +11,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
 
+import static com.payneteasy.jetty.util.Strings.isEmpty;
+import static com.payneteasy.jetty.util.error.HttpErrorContext.errorCtx;
+
 public class SafeServletResponse {
 
     private static final Logger LOG = LoggerFactory.getLogger(SafeServletResponse.class);
 
+    private final String url;
     private final HttpServletResponse delegate;
 
-    public SafeServletResponse(HttpServletResponse delegate) {
+    public SafeServletResponse(String aUrl, HttpServletResponse delegate) {
+        url = aUrl;
         this.delegate = delegate;
     }
 
@@ -25,7 +32,12 @@ public class SafeServletResponse {
             delegate.getWriter().println(aMessage);
         } catch (IOException e) {
             LOG.error("Cannot write", e);
-            throw new IllegalStateException("Cannot write to output", e);
+            throw new InternalErrorException(
+                errorCtx("Cannot write to output stream", e)
+                    .sys("statusCode", aStatusCode + "")
+                    .sys("message"   , aMessage)
+                    .sys("url"       , url)
+            );
         }
     }
 
@@ -85,19 +97,29 @@ public class SafeServletResponse {
         try {
             return delegate.getWriter();
         } catch (IOException e) {
-            throw new IllegalStateException("Cannot get writer", e);
+            throw new InternalErrorException(errorCtx("Cannot get writer", e)
+                    .friendly("Cannot write to output")
+                    .sys("url"       , url)
+            );
         }
     }
 
     public void sendRedirect(String aUrl) {
-        if(Strings.isEmpty(aUrl)) {
-            throw new IllegalStateException("Url for redirect is empty [" + aUrl + "]");
+        if(isEmpty(aUrl)) {
+            throw new InternalErrorException(errorCtx("URL for redirect is empty")
+                    .friendlySame()
+                    .sys("url"       , url)
+            );
         }
         try {
             delegate.sendRedirect(aUrl);
         } catch (IOException e) {
             LOG.error("Cannot send redirect to {}", aUrl, e);
-            throw new IllegalStateException("Cannot send redirect", e);
+            throw new InternalErrorException(errorCtx("Cannot send redirect")
+                    .friendly("Cannot send redirect to " + aUrl)
+                    .sys("redirectUrl", aUrl)
+                    .sys("url"        , url)
+            );
         }
     }
 }
