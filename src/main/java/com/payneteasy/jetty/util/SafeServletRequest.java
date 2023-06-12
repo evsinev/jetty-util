@@ -96,4 +96,8 @@ public class SafeServletRequest implements IRequestParameters {
     public SafeParameters getParameters() {
         return new SafeParameters(this);
     }
+
+    public HttpServletRequest getDelegate() {
+        return delegate;
+    }
 }
