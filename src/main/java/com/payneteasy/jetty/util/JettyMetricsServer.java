@@ -13,8 +13,6 @@ import org.eclipse.jetty.util.thread.QueuedThreadPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static net.logstash.logback.argument.StructuredArguments.keyValue;
-
 public class JettyMetricsServer {
 
     private static final Logger LOG = LoggerFactory.getLogger(JettyMetricsServer.class);
@@ -32,7 +30,7 @@ public class JettyMetricsServer {
         Server managementServer = createManagementServer();
         managementServer.start();
         managementServer.setStopAtShutdown(true);
-        LOG.info("Started metrics server. {}", keyValue("port", port));
+        LOG.info("Started metrics server on port {}", port);
     }
 
     public MetricsFilter createRequestMetricsFilter() {
