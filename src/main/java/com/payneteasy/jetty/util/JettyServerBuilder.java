@@ -1,9 +1,8 @@
 package com.payneteasy.jetty.util;
 
 import com.payneteasy.jetty.util.error.ServerStartupException;
+import org.eclipse.jetty.ee8.servlet.ServletContextHandler;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.util.component.AbstractLifeCycle;
 import org.eclipse.jetty.util.component.LifeCycle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,11 +80,11 @@ public class JettyServerBuilder {
                 .build()
                 .createServer();
 
-        jetty.addLifeCycleListener(new AbstractLifeCycle.AbstractLifeCycleListener() {
+        jetty.addEventListener(new LifeCycle.Listener() {
             @Override
             public void lifeCycleStopped(LifeCycle event) {
                 LOG.info("Shutting down ...");
-                if(shutdownListener != null) {
+                if (shutdownListener != null) {
                     shutdownListener.run();
                 }
             }

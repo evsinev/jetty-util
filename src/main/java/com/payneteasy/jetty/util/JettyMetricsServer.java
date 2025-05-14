@@ -3,12 +3,11 @@ package com.payneteasy.jetty.util;
 import io.prometheus.client.exporter.MetricsServlet;
 import io.prometheus.client.filter.MetricsFilter;
 import io.prometheus.client.hotspot.DefaultExports;
-import io.prometheus.client.jetty.JettyStatisticsCollector;
 import io.prometheus.client.jetty.QueuedThreadPoolStatisticsCollector;
+import org.eclipse.jetty.ee8.servlet.ServletContextHandler;
+import org.eclipse.jetty.ee8.servlet.ServletHolder;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.StatisticsHandler;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +57,7 @@ public class JettyMetricsServer {
         stats.setHandler(aTargetServer.getHandler());
         aTargetServer.setHandler(stats);
 
-        new JettyStatisticsCollector(stats).register();
+        new JettyStatisticsCollectorEe8(stats).register();
 
         new QueuedThreadPoolStatisticsCollector((QueuedThreadPool) aTargetServer.getThreadPool(), "jetty_server_thread_pool").register();
 
