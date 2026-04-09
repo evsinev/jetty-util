@@ -82,7 +82,7 @@ String appStatusToken();
 // shade plugin transformer org.apache.maven.plugins.shade.resource.ManifestResourceTransformer
 <manifestEntries>
     <Implementation-Version>${project.version}</Implementation-Version>
-</transformer>
+</manifestEntries>
 ```
 
 
