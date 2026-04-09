@@ -50,4 +50,39 @@ new JettyServerBuilder()
 
 ```
 
+### App Status
+
+```java
+// WebApplication
+
+AppStatusInfo appStatusInfo = AppStatusInfo.builder()
+        .jettyConfig     ( config                   )
+        .instanceName    ( config.appInstanceName() )
+        .applicationClass( WebApplication.class     )
+        .bearerToken     ( config.appStatusToken()  )
+        .build();
+
+new JettyServerBuilder()
+ ...
+    .servlet("/app-status/*", new AppStatusServlet(appStatusInfo))
+ ...
+
+// IStartupConfig
+
+//region app status
+@AStartupParameter(name = "APP_INSTANCE_NAME", value = "web-app")
+String appInstanceName();
+
+@AStartupParameter(name = "APP_STATUS_TOKEN", value = "***", maskVariable = true)
+String appStatusToken();
+//endregion
+```
+
+```xml
+// shade plugin transformer org.apache.maven.plugins.shade.resource.ManifestResourceTransformer
+<manifestEntries>
+    <Implementation-Version>${project.version}</Implementation-Version>
+</transformer>
+```
+
 
