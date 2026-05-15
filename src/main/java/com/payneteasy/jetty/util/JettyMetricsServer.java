@@ -52,12 +52,8 @@ public class JettyMetricsServer {
         return jetty;
     }
 
-    public JettyMetricsServer registerJettyMetrics(Server aTargetServer) {
-        StatisticsHandler stats = new StatisticsHandler();
-        stats.setHandler(aTargetServer.getHandler());
-        aTargetServer.setHandler(stats);
-
-        new JettyStatisticsCollectorEe8(stats).register();
+    public JettyMetricsServer registerJettyMetrics(Server aTargetServer, StatisticsHandler aStatisticsHandler) {
+        new JettyStatisticsCollectorEe8(aStatisticsHandler).register();
 
         new QueuedThreadPoolStatisticsCollector((QueuedThreadPool) aTargetServer.getThreadPool(), "jetty_server_thread_pool").register();
 

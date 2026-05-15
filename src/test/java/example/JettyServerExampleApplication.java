@@ -1,3 +1,5 @@
+package example;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.payneteasy.apiservlet.GsonJettyContextHandler;
@@ -29,8 +31,13 @@ public class JettyServerExampleApplication {
                 .filter("/*", new PreventStackTraceFilter())
 
                 .servlet("/health", new HealthServlet())
+                .servlet("/wait", new WaitServletExample())
 
                 .contextListener(JettyServerExampleApplication::configureContext)
+
+                .shutdownListener(() -> {
+                    LOG.info("Shutting down...");
+                })
 
                 .build();
 

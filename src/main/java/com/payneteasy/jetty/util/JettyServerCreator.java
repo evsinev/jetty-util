@@ -4,14 +4,17 @@ import lombok.Builder;
 import org.eclipse.jetty.server.*;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 
+import java.time.Duration;
+
 @Builder
 public class JettyServerCreator {
 
-    private final int     port;
-    private final int     threadsMax;
-    private final int     threadMin;
-    private final int     threadsIdleTimeoutMs;
-    private final String  contextPath;
+    private final int      port;
+    private final int      threadsMax;
+    private final int      threadMin;
+    private final int      threadsIdleTimeoutMs;
+    private final Duration stopTimeout;
+    private final String   contextPath;
 
     public static Server createJettyServer(IJettyStartupParameters aConfig) {
         return JettyServerCreator.builder()
@@ -19,6 +22,7 @@ public class JettyServerCreator {
                 .threadsMax           ( aConfig.getJettyMaxThreads())
                 .threadMin            ( aConfig.getJettyMinThreads())
                 .threadsIdleTimeoutMs ( aConfig.getJettyIdleTimeoutMs())
+                .stopTimeout          ( aConfig.getJettyStopTimeout())
                 .contextPath          ( aConfig.getJettyContext() )
                 .build()
                 .createServer();
@@ -33,6 +37,7 @@ public class JettyServerCreator {
         threadPool.setName("jetty");
 
         Server jetty = new Server(threadPool);
+        jetty.setStopTimeout(stopTimeout.toMillis());
 
         HttpConfiguration config = new HttpConfiguration();
         config.addCustomizer(new ForwardedRequestCustomizer());

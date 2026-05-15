@@ -2,6 +2,8 @@ package com.payneteasy.jetty.util;
 
 import com.payneteasy.startup.parameters.AStartupParameter;
 
+import java.time.Duration;
+
 public interface IJettyStartupParameters {
 
     /**
@@ -17,6 +19,19 @@ public interface IJettyStartupParameters {
 
     @AStartupParameter(name = "JETTY_POOL_IDLE_TIMEOUT_MS", value = "60000")
     int getJettyIdleTimeoutMs();
+
+    /**
+     * Graceful shutdown timeout. When the JVM receives TERM/HUP, Jetty stops accepting
+     * new connections and waits up to this duration for in-flight HTTP requests
+     * to complete before forcibly stopping. Must be coordinated with the platform's
+     * termination grace period (e.g. k8s {@code terminationGracePeriodSeconds}).
+     * <p>
+     * Value is parsed as ISO-8601 duration, e.g. {@code PT30S}, {@code PT3M}, {@code PT1H}.
+     *
+     * @return graceful stop timeout
+     */
+    @AStartupParameter(name = "JETTY_STOP_TIMEOUT", value = "PT3M")
+    Duration getJettyStopTimeout();
 
     @AStartupParameter(name = "JETTY_PORT", value = "8080")
     int getJettyPort();

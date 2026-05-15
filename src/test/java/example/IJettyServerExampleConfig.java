@@ -1,3 +1,5 @@
+package example;
+
 import com.payneteasy.jetty.util.IJettyStartupParameters;
 import com.payneteasy.startup.parameters.AStartupParameter;
 
