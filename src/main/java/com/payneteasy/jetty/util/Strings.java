@@ -6,7 +6,7 @@ public class Strings {
     }
 
     public static boolean isEmpty(String aText) {
-        return aText == null || aText.length() == 0 || aText.trim().length() == 0;
+        return aText == null || aText.isBlank();
     }
 
     public static boolean hasText(String aText) {
